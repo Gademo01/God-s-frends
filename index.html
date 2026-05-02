@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prière du Matin</title>
+  <title>Prière du Matin — GGMC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -53,14 +53,9 @@
       padding: 2rem 1.25rem;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-      animation: fadeDown 0.8s ease both;
-    }
+    header { text-align: center; margin-bottom: 2rem; animation: fadeDown 0.8s ease both; }
 
     .cross-wrap { display: flex; justify-content: center; margin-bottom: 1rem; }
-
     .cross { position: relative; width: 34px; height: 42px; }
     .cross::before {
       content: '';
@@ -119,12 +114,7 @@
 
     .card-inner { padding: 2rem 2.25rem 1.75rem; }
 
-    .date-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
+    .date-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
     .date-rule { flex: 1; height: 1px; background: var(--gold-dim); }
     .date-text {
       font-family: 'Cinzel', serif;
@@ -180,12 +170,40 @@
       font-style: normal;
     }
 
-    .ornament {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 1.5rem 0;
+    /* Message de limite */
+    .limit-box {
+      background: rgba(201,168,76,0.07);
+      border: 1px solid var(--gold-dim);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      display: none;
     }
+    .limit-box.show { display: block; }
+    .limit-icon { font-size: 28px; margin-bottom: 0.5rem; }
+    .limit-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    .limit-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.7;
+    }
+    .limit-contact {
+      margin-top: 0.75rem;
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+    }
+
+    .ornament { display: flex; align-items: center; gap: 0.75rem; margin: 1.5rem 0; }
     .ornament-line { flex: 1; height: 1px; background: var(--gold-dim); }
     .ornament-diamond {
       width: 6px; height: 6px;
@@ -212,12 +230,7 @@
       margin-top: 0.5rem;
     }
 
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 1.75rem;
-      flex-wrap: wrap;
-    }
+    .actions { display: flex; gap: 10px; margin-top: 1.75rem; flex-wrap: wrap; }
 
     .btn {
       flex: 1;
@@ -240,6 +253,10 @@
       color: var(--gold);
     }
     .btn-outline:hover { background: var(--gold-dim); border-color: var(--gold); }
+    .btn-outline:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
 
     .btn-solid {
       background: linear-gradient(135deg, var(--gold) 0%, #a8782a 100%);
@@ -262,13 +279,51 @@
     }
     .share-hint.show { opacity: 1; }
 
-    footer {
-      margin-top: 1.75rem;
+    /* Signature */
+    .signature {
+      margin-top: 2rem;
       text-align: center;
-      font-size: 12px;
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    .sig-name {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .sig-role {
+      font-size: 11px;
       color: var(--text-dim);
       font-style: italic;
-      animation: fadeUp 1s ease 0.5s both;
+      margin-top: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .sig-verse {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-style: italic;
+      margin-top: 0.75rem;
+    }
+
+    /* Badge changement restant */
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .badge {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      background: rgba(201,168,76,0.06);
     }
 
     .loading-dots { display: inline-flex; gap: 6px; align-items: center; }
@@ -344,11 +399,26 @@
         <div class="date-rule"></div>
       </div>
 
+      <div class="badge-row">
+        <span class="badge" id="changeBadge">✦ Chargement...</span>
+      </div>
+
       <p class="intro-text" id="introText">Chargement de la prière du jour...</p>
       <div class="prayer-title" id="prayerTitle"></div>
 
       <div class="prayer-body" id="prayerBody">
         <div class="loading-dots"><span></span><span></span><span></span></div>
+      </div>
+
+      <!-- Message limite atteinte -->
+      <div class="limit-box" id="limitBox">
+        <div class="limit-icon">🙏</div>
+        <div class="limit-title">Que la grâce de Dieu soit sur toi !</div>
+        <p class="limit-text">
+          Tu as déjà reçu ta prière du jour et utilisé ton changement. Reviens demain matin à 5h20 pour une nouvelle parole fraîche du Seigneur.<br><br>
+          Si tu as une demande particulière ou un besoin spécial, n'hésite pas à contacter :
+        </p>
+        <p class="limit-contact">✝️ Mr GADEMO KOFFI CREDO — GGMC 🙌🙏</p>
       </div>
 
       <div class="ornament">
@@ -361,7 +431,7 @@
       <p class="cta-tag" id="ctaTag"></p>
 
       <div class="actions">
-        <button class="btn btn-outline" onclick="loadPrayer()">✦ Nouvelle prière</button>
+        <button class="btn btn-outline" id="newBtn" onclick="requestChange()">✦ Nouvelle prière</button>
         <button class="btn btn-solid" onclick="sendWhatsApp()">WhatsApp ↗</button>
       </div>
       <div class="actions" style="margin-top: 8px;">
@@ -373,13 +443,22 @@
     </div>
   </div>
 
-  <footer>✝️ &nbsp;«&nbsp;Priez sans cesse.&nbsp;» — 1 Thessaloniciens 5:17</footer>
+  <!-- Signature -->
+  <div class="signature">
+    <div class="sig-name">✝️ GADEMO KOFFI CREDO</div>
+    <div class="sig-role">Groupe de Grâce et de Miséricorde du Christ — GGMC</div>
+    <div class="sig-verse">« Priez sans cesse. » — 1 Thessaloniciens 5:17</div>
+  </div>
 
 </div>
 
 <div class="toast" id="toast">✓ Prière copiée !</div>
 
 <script>
+  // ─── Constantes ───────────────────────────────────────────────
+  const RESET_HOUR = 5;
+  const RESET_MINUTE = 20;
+
   const FALLBACK = [
     {
       intro: "J'aimerais partager la prière d'aujourd'hui avec toi !",
@@ -420,6 +499,35 @@
 
   let currentData = null;
 
+  // ─── Clé du jour (reset à 5h20) ───────────────────────────────
+  function getDayKey() {
+    const now = new Date();
+    let d = new Date(now);
+    // Si on est avant 5h20, on est encore "hier"
+    if (now.getHours() < RESET_HOUR || (now.getHours() === RESET_HOUR && now.getMinutes() < RESET_MINUTE)) {
+      d.setDate(d.getDate() - 1);
+    }
+    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+  }
+
+  // ─── Storage helpers ──────────────────────────────────────────
+  function saveState(prayer, changes) {
+    const key = getDayKey();
+    localStorage.setItem('ggmc_prayer_' + key, JSON.stringify(prayer));
+    localStorage.setItem('ggmc_changes_' + key, String(changes));
+  }
+
+  function loadState() {
+    const key = getDayKey();
+    const prayer = localStorage.getItem('ggmc_prayer_' + key);
+    const changes = localStorage.getItem('ggmc_changes_' + key);
+    return {
+      prayer: prayer ? JSON.parse(prayer) : null,
+      changesUsed: changes !== null ? parseInt(changes) : 0
+    };
+  }
+
+  // ─── Date label ───────────────────────────────────────────────
   function getDateLabel() {
     const d = new Date();
     const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
@@ -427,8 +535,11 @@
     return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
   }
 
-  function renderPrayer(data) {
+  // ─── Render ───────────────────────────────────────────────────
+  function renderPrayer(data, changesUsed) {
     currentData = data;
+
+    document.getElementById('limitBox').classList.remove('show');
     document.getElementById('introText').textContent = data.intro;
     document.getElementById('prayerTitle').textContent = data.titre;
     document.getElementById('prayerBody').innerHTML = `
@@ -437,15 +548,44 @@
     `;
     document.getElementById('ctaText').textContent = data.cta;
     document.getElementById('ctaTag').textContent = data.tag;
+
+    // Badge + bouton
+    const newBtn = document.getElementById('newBtn');
+    const badge = document.getElementById('changeBadge');
+
+    if (changesUsed === 0) {
+      badge.textContent = '✦ 1 changement disponible aujourd\'hui';
+      newBtn.disabled = false;
+      newBtn.style.opacity = '1';
+    } else {
+      badge.textContent = '✦ Changement déjà utilisé aujourd\'hui';
+      newBtn.disabled = true;
+      newBtn.style.opacity = '0.4';
+    }
   }
 
-  async function loadPrayer() {
+  function showLimitMessage() {
+    document.getElementById('limitBox').classList.add('show');
+    document.getElementById('prayerBody').style.display = 'none';
+    document.getElementById('introText').textContent = 'Que la bénédiction du Seigneur soit sur toi !';
+    document.getElementById('prayerTitle').textContent = '';
+    document.getElementById('ctaText').textContent = '';
+    document.getElementById('ctaTag').textContent = '';
+    document.getElementById('changeBadge').textContent = '✦ Limite du jour atteinte';
+    document.getElementById('newBtn').disabled = true;
+    document.getElementById('newBtn').style.opacity = '0.4';
+  }
+
+  // ─── Fetch API ────────────────────────────────────────────────
+  async function fetchPrayer() {
+    document.getElementById('prayerBody').style.display = 'flex';
     document.getElementById('introText').textContent = 'Préparation de la prière du jour...';
     document.getElementById('prayerTitle').textContent = '';
     document.getElementById('prayerBody').innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
     document.getElementById('ctaText').textContent = '';
     document.getElementById('ctaTag').textContent = '';
     document.getElementById('shareHint').classList.remove('show');
+    document.getElementById('limitBox').classList.remove('show');
 
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -461,7 +601,7 @@ Réponds UNIQUEMENT en JSON valide, sans markdown, sans backticks:
 {
   "intro": "[phrase d'intro chaleureuse, ex: J'aimerais partager la prière d'aujourd'hui avec toi !]",
   "titre": "[titre court et percutant, ex: Apprends-moi à vivre]",
-  "priere": "[prière complète : remerciement + repentance + demande précise. Ton sincère et chaleureux, comme un frère qui prie. 3-5 phrases.]",
+  "priere": "[prière complète : remerciement + repentance + demande précise. Ton sincère et chaleureux. 3-5 phrases.]",
   "cta": "[appel à partager, ex: Envoie-la à quelqu'un pour être une bénédiction.]",
   "tag": "GGMC ✝️🙌🙏"
 }
@@ -472,16 +612,49 @@ Varie les thèmes : la paix, la force, la protection, la famille, le travail, la
       const data = await res.json();
       const raw = data.content?.[0]?.text || '';
       const clean = raw.replace(/```json|```/g, '').trim();
-      renderPrayer(JSON.parse(clean));
+      return JSON.parse(clean);
     } catch(e) {
       const idx = Math.floor(Math.random() * FALLBACK.length);
-      renderPrayer(FALLBACK[idx]);
+      return FALLBACK[idx];
     }
   }
 
+  // ─── Init ─────────────────────────────────────────────────────
+  async function init() {
+    document.getElementById('dateLabel').textContent = getDateLabel();
+    const { prayer, changesUsed } = loadState();
+
+    if (prayer) {
+      // Prière du jour déjà en cache
+      renderPrayer(prayer, changesUsed);
+    } else {
+      // Première ouverture du jour → générer
+      const data = await fetchPrayer();
+      saveState(data, 0);
+      renderPrayer(data, 0);
+    }
+  }
+
+  // ─── Demande de changement ────────────────────────────────────
+  async function requestChange() {
+    const { changesUsed } = loadState();
+
+    if (changesUsed >= 1) {
+      // Déjà utilisé → message contact
+      showLimitMessage();
+      return;
+    }
+
+    // Premier changement → générer une nouvelle
+    const data = await fetchPrayer();
+    saveState(data, 1);
+    renderPrayer(data, 1);
+  }
+
+  // ─── Share ────────────────────────────────────────────────────
   function getPrayerText() {
     if (!currentData) return '';
-    return `${currentData.intro}\n\n${currentData.titre}\n\n${currentData.priere}\n\nAu nom de Jésus ! Amen. ✝️🙌🙏\n\n${currentData.cta}\n\n${currentData.tag}`;
+    return `${currentData.intro}\n\n${currentData.titre}\n\n${currentData.priere}\n\nAu nom de Jésus ! Amen. ✝️🙌🙏\n\n${currentData.cta}\n\n${currentData.tag}\n\n— GADEMO KOFFI CREDO`;
   }
 
   function sendWhatsApp() {
@@ -513,9 +686,8 @@ Varie les thèmes : la paix, la force, la protection, la famille, le travail, la
     setTimeout(() => document.getElementById('toast').classList.remove('show'), 2800);
   }
 
-  document.getElementById('dateLabel').textContent = getDateLabel();
-  loadPrayer();
+  // ─── Lancement ────────────────────────────────────────────────
+  init();
 </script>
 </body>
 </html>
-  
