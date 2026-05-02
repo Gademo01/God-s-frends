@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -361,7 +362,10 @@
 
       <div class="actions">
         <button class="btn btn-outline" onclick="loadPrayer()">✦ Nouvelle prière</button>
-        <button class="btn btn-solid" onclick="sharePrayer()">Partager ↗</button>
+        <button class="btn btn-solid" onclick="sendWhatsApp()">WhatsApp ↗</button>
+      </div>
+      <div class="actions" style="margin-top: 8px;">
+        <button class="btn btn-outline" style="font-size:10px;" onclick="copyPrayer()">📋 Copier le texte</button>
       </div>
 
       <p class="share-hint" id="shareHint">✓ Prière copiée — prête à partager !</p>
@@ -373,7 +377,7 @@
 
 </div>
 
-<div class="toast" id="toast">Prière copiée !</div>
+<div class="toast" id="toast">✓ Prière copiée !</div>
 
 <script>
   const FALLBACK = [
@@ -475,26 +479,31 @@ Varie les thèmes : la paix, la force, la protection, la famille, le travail, la
     }
   }
 
-  function sharePrayer() {
+  function getPrayerText() {
+    if (!currentData) return '';
+    return `${currentData.intro}\n\n${currentData.titre}\n\n${currentData.priere}\n\nAu nom de Jésus ! Amen. ✝️🙌🙏\n\n${currentData.cta}\n\n${currentData.tag}`;
+  }
+
+  function sendWhatsApp() {
     if (!currentData) return;
-    const text = `${currentData.intro}\n\n${currentData.titre}\n\n${currentData.priere}\n\nAu nom de Jésus ! Amen. ✝️🙌🙏\n\n${currentData.cta}\n\n${currentData.tag}`;
+    const text = encodeURIComponent(getPrayerText());
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+    const url = isMobile
+      ? `whatsapp://send?text=${text}`
+      : `https://web.whatsapp.com/send?text=${text}`;
+    window.open(url, '_blank');
+  }
 
-    const copy = (t) => {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(t).then(showCopied);
-      } else {
-        const ta = document.createElement('textarea');
-        ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select();
-        document.execCommand('copy'); document.body.removeChild(ta);
-        showCopied();
-      }
-    };
-
-    if (navigator.share) {
-      navigator.share({ title: 'Prière du Matin', text }).catch(() => copy(text));
+  function copyPrayer() {
+    const text = getPrayerText();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(showCopied);
     } else {
-      copy(text);
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      showCopied();
     }
   }
 
