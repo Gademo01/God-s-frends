@@ -114,7 +114,7 @@
 
     .card-inner { padding: 2rem 2.25rem 1.75rem; }
 
-    .date-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .date-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
     .date-rule { flex: 1; height: 1px; background: var(--gold-dim); }
     .date-text {
       font-family: 'Cinzel', serif;
@@ -123,6 +123,59 @@
       color: var(--gold);
       text-transform: uppercase;
       white-space: nowrap;
+    }
+
+    /* ── Switcher ── */
+    .switcher {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--gold-dim);
+      border-radius: 30px;
+      overflow: hidden;
+    }
+    .switcher.show { display: flex; }
+
+    .sw-btn {
+      flex: 1;
+      padding: 9px 0;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+    }
+
+    .sw-btn.active {
+      background: linear-gradient(135deg, var(--gold) 0%, #a8782a 100%);
+      color: #0d0d1a;
+      font-weight: 600;
+    }
+
+    .sw-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--gold-dim);
+    }
+
+    /* ── Badge ── */
+    .badge-row { display: flex; justify-content: center; margin-bottom: 1rem; }
+    .badge {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      background: rgba(201,168,76,0.06);
     }
 
     .intro-text {
@@ -170,7 +223,7 @@
       font-style: normal;
     }
 
-    /* Message de limite */
+    /* ── Limite ── */
     .limit-box {
       background: rgba(201,168,76,0.07);
       border: 1px solid var(--gold-dim);
@@ -220,7 +273,6 @@
       font-style: italic;
       line-height: 1.7;
     }
-
     .cta-tag {
       font-family: 'Cinzel', serif;
       font-size: 13px;
@@ -253,10 +305,7 @@
       color: var(--gold);
     }
     .btn-outline:hover { background: var(--gold-dim); border-color: var(--gold); }
-    .btn-outline:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
+    .btn-outline:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .btn-solid {
       background: linear-gradient(135deg, var(--gold) 0%, #a8782a 100%);
@@ -279,13 +328,11 @@
     }
     .share-hint.show { opacity: 1; }
 
-    /* Signature */
     .signature {
       margin-top: 2rem;
       text-align: center;
       animation: fadeUp 1s ease 0.5s both;
     }
-
     .sig-name {
       font-family: 'Cinzel', serif;
       font-size: 13px;
@@ -293,7 +340,6 @@
       color: var(--gold);
       font-weight: 500;
     }
-
     .sig-role {
       font-size: 11px;
       color: var(--text-dim);
@@ -301,29 +347,11 @@
       margin-top: 0.3rem;
       letter-spacing: 0.05em;
     }
-
     .sig-verse {
       font-size: 11px;
       color: var(--text-dim);
       font-style: italic;
       margin-top: 0.75rem;
-    }
-
-    /* Badge changement restant */
-    .badge-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
-    .badge {
-      font-family: 'Cinzel', serif;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      padding: 4px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--gold-dim);
-      color: var(--gold);
-      background: rgba(201,168,76,0.06);
     }
 
     .loading-dots { display: inline-flex; gap: 6px; align-items: center; }
@@ -370,10 +398,10 @@
       50% { opacity: 1; transform: scale(1); }
     }
     @keyframes prayerIn {
-      from { opacity: 0; transform: translateY(12px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .prayer-animate { animation: prayerIn 0.7s ease both; }
+    .prayer-animate { animation: prayerIn 0.5s ease both; }
 
     @media (max-width: 480px) {
       .card-inner { padding: 1.5rem 1.25rem 1.5rem; }
@@ -399,6 +427,13 @@
         <div class="date-rule"></div>
       </div>
 
+      <!-- Switcher prière 1 / prière 2 — visible seulement si 2 prières dispo -->
+      <div class="switcher" id="switcher">
+        <button class="sw-btn active" id="sw1" onclick="switchPrayer(0)">✦ Prière 1</button>
+        <div class="sw-divider"></div>
+        <button class="sw-btn" id="sw2" onclick="switchPrayer(1)">✦ Prière 2</button>
+      </div>
+
       <div class="badge-row">
         <span class="badge" id="changeBadge">✦ Chargement...</span>
       </div>
@@ -410,7 +445,6 @@
         <div class="loading-dots"><span></span><span></span><span></span></div>
       </div>
 
-      <!-- Message limite atteinte -->
       <div class="limit-box" id="limitBox">
         <div class="limit-icon">🙏</div>
         <div class="limit-title">Que la grâce de Dieu soit sur toi !</div>
@@ -443,7 +477,6 @@
     </div>
   </div>
 
-  <!-- Signature -->
   <div class="signature">
     <div class="sig-name">✝️ GADEMO KOFFI CREDO</div>
     <div class="sig-role">Groupe de Grâce et de Miséricorde du Christ — GGMC</div>
@@ -455,7 +488,6 @@
 <div class="toast" id="toast">✓ Prière copiée !</div>
 
 <script>
-  // ─── Constantes ───────────────────────────────────────────────
   const RESET_HOUR = 5;
   const RESET_MINUTE = 20;
 
@@ -497,33 +529,34 @@
     },
   ];
 
-  let currentData = null;
+  // État global
+  let prayers = [null, null]; // [prière1, prière2]
+  let currentIndex = 0;       // 0 ou 1
 
-  // ─── Clé du jour (reset à 5h20) ───────────────────────────────
+  // ─── Clé du jour (reset à 5h20) ──────────────────────────────
   function getDayKey() {
     const now = new Date();
     let d = new Date(now);
-    // Si on est avant 5h20, on est encore "hier"
     if (now.getHours() < RESET_HOUR || (now.getHours() === RESET_HOUR && now.getMinutes() < RESET_MINUTE)) {
       d.setDate(d.getDate() - 1);
     }
     return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
   }
 
-  // ─── Storage helpers ──────────────────────────────────────────
-  function saveState(prayer, changes) {
+  // ─── Storage ──────────────────────────────────────────────────
+  function saveState() {
     const key = getDayKey();
-    localStorage.setItem('ggmc_prayer_' + key, JSON.stringify(prayer));
-    localStorage.setItem('ggmc_changes_' + key, String(changes));
+    localStorage.setItem('ggmc_p1_' + key, prayers[0] ? JSON.stringify(prayers[0]) : '');
+    localStorage.setItem('ggmc_p2_' + key, prayers[1] ? JSON.stringify(prayers[1]) : '');
   }
 
   function loadState() {
     const key = getDayKey();
-    const prayer = localStorage.getItem('ggmc_prayer_' + key);
-    const changes = localStorage.getItem('ggmc_changes_' + key);
+    const p1 = localStorage.getItem('ggmc_p1_' + key);
+    const p2 = localStorage.getItem('ggmc_p2_' + key);
     return {
-      prayer: prayer ? JSON.parse(prayer) : null,
-      changesUsed: changes !== null ? parseInt(changes) : 0
+      p1: p1 ? JSON.parse(p1) : null,
+      p2: p2 ? JSON.parse(p2) : null,
     };
   }
 
@@ -535,58 +568,51 @@
     return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
   }
 
-  // ─── Render ───────────────────────────────────────────────────
-  function renderPrayer(data, changesUsed) {
-    currentData = data;
+  // ─── Render prière affichée ───────────────────────────────────
+  function renderCurrent() {
+    const data = prayers[currentIndex];
+    if (!data) return;
 
     document.getElementById('limitBox').classList.remove('show');
+    document.getElementById('prayerBody').style.display = 'flex';
     document.getElementById('introText').textContent = data.intro;
     document.getElementById('prayerTitle').textContent = data.titre;
     document.getElementById('prayerBody').innerHTML = `
       <span class="prayer-animate">${data.priere}</span>
-      <span class="amen prayer-animate" style="animation-delay:0.2s">Au nom de Jésus ! Amen. ✝️🙌🙏</span>
+      <span class="amen prayer-animate" style="animation-delay:0.15s">Au nom de Jésus ! Amen. ✝️🙌🙏</span>
     `;
     document.getElementById('ctaText').textContent = data.cta;
     document.getElementById('ctaTag').textContent = data.tag;
 
-    // Badge + bouton
+    // Switcher
+    const hasBoth = prayers[0] && prayers[1];
+    document.getElementById('switcher').classList.toggle('show', hasBoth);
+    document.getElementById('sw1').classList.toggle('active', currentIndex === 0);
+    document.getElementById('sw2').classList.toggle('active', currentIndex === 1);
+
+    // Badge + bouton nouvelle prière
     const newBtn = document.getElementById('newBtn');
     const badge = document.getElementById('changeBadge');
-
-    if (changesUsed === 0) {
+    if (!prayers[1]) {
       badge.textContent = '✦ 1 changement disponible aujourd\'hui';
       newBtn.disabled = false;
       newBtn.style.opacity = '1';
     } else {
-      badge.textContent = '✦ Changement déjà utilisé aujourd\'hui';
+      badge.textContent = '✦ Les 2 prières du jour sont disponibles';
       newBtn.disabled = true;
       newBtn.style.opacity = '0.4';
     }
   }
 
-  function showLimitMessage() {
-    document.getElementById('limitBox').classList.add('show');
-    document.getElementById('prayerBody').style.display = 'none';
-    document.getElementById('introText').textContent = 'Que la bénédiction du Seigneur soit sur toi !';
-    document.getElementById('prayerTitle').textContent = '';
-    document.getElementById('ctaText').textContent = '';
-    document.getElementById('ctaTag').textContent = '';
-    document.getElementById('changeBadge').textContent = '✦ Limite du jour atteinte';
-    document.getElementById('newBtn').disabled = true;
-    document.getElementById('newBtn').style.opacity = '0.4';
+  // ─── Switch entre prière 1 et 2 ──────────────────────────────
+  function switchPrayer(index) {
+    if (!prayers[index]) return;
+    currentIndex = index;
+    renderCurrent();
   }
 
-  // ─── Fetch API ────────────────────────────────────────────────
+  // ─── Fetch depuis l'API ───────────────────────────────────────
   async function fetchPrayer() {
-    document.getElementById('prayerBody').style.display = 'flex';
-    document.getElementById('introText').textContent = 'Préparation de la prière du jour...';
-    document.getElementById('prayerTitle').textContent = '';
-    document.getElementById('prayerBody').innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-    document.getElementById('ctaText').textContent = '';
-    document.getElementById('ctaTag').textContent = '';
-    document.getElementById('shareHint').classList.remove('show');
-    document.getElementById('limitBox').classList.remove('show');
-
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -619,56 +645,83 @@ Varie les thèmes : la paix, la force, la protection, la famille, le travail, la
     }
   }
 
+  // ─── Loading state ────────────────────────────────────────────
+  function showLoading() {
+    document.getElementById('introText').textContent = 'Préparation de la prière...';
+    document.getElementById('prayerTitle').textContent = '';
+    document.getElementById('prayerBody').innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+    document.getElementById('ctaText').textContent = '';
+    document.getElementById('ctaTag').textContent = '';
+    document.getElementById('shareHint').classList.remove('show');
+    document.getElementById('limitBox').classList.remove('show');
+    document.getElementById('switcher').classList.remove('show');
+  }
+
   // ─── Init ─────────────────────────────────────────────────────
   async function init() {
     document.getElementById('dateLabel').textContent = getDateLabel();
-    const { prayer, changesUsed } = loadState();
+    const { p1, p2 } = loadState();
 
-    if (prayer) {
-      // Prière du jour déjà en cache
-      renderPrayer(prayer, changesUsed);
+    if (p1) {
+      prayers[0] = p1;
+      prayers[1] = p2 || null;
+      currentIndex = 0;
+      renderCurrent();
     } else {
-      // Première ouverture du jour → générer
+      showLoading();
       const data = await fetchPrayer();
-      saveState(data, 0);
-      renderPrayer(data, 0);
+      prayers[0] = data;
+      prayers[1] = null;
+      saveState();
+      currentIndex = 0;
+      renderCurrent();
     }
   }
 
   // ─── Demande de changement ────────────────────────────────────
   async function requestChange() {
-    const { changesUsed } = loadState();
-
-    if (changesUsed >= 1) {
-      // Déjà utilisé → message contact
-      showLimitMessage();
+    if (prayers[1]) {
+      // Les 2 sont déjà utilisées → message limite
+      document.getElementById('prayerBody').style.display = 'none';
+      document.getElementById('introText').textContent = 'Que la bénédiction du Seigneur soit sur toi !';
+      document.getElementById('prayerTitle').textContent = '';
+      document.getElementById('ctaText').textContent = '';
+      document.getElementById('ctaTag').textContent = '';
+      document.getElementById('changeBadge').textContent = '✦ Limite du jour atteinte';
+      document.getElementById('limitBox').classList.add('show');
+      document.getElementById('newBtn').disabled = true;
+      document.getElementById('newBtn').style.opacity = '0.4';
+      document.getElementById('switcher').classList.remove('show');
       return;
     }
 
-    // Premier changement → générer une nouvelle
+    // Générer la 2e prière
+    showLoading();
     const data = await fetchPrayer();
-    saveState(data, 1);
-    renderPrayer(data, 1);
+    prayers[1] = data;
+    saveState();
+    currentIndex = 1;
+    renderCurrent();
   }
 
   // ─── Share ────────────────────────────────────────────────────
   function getPrayerText() {
-    if (!currentData) return '';
-    return `${currentData.intro}\n\n${currentData.titre}\n\n${currentData.priere}\n\nAu nom de Jésus ! Amen. ✝️🙌🙏\n\n${currentData.cta}\n\n${currentData.tag}\n\n— GADEMO KOFFI CREDO`;
+    const data = prayers[currentIndex];
+    if (!data) return '';
+    return `${data.intro}\n\n${data.titre}\n\n${data.priere}\n\nAu nom de Jésus ! Amen. ✝️🙌🙏\n\n${data.cta}\n\n${data.tag}\n\n— GADEMO KOFFI CREDO`;
   }
 
   function sendWhatsApp() {
-    if (!currentData) return;
-    const text = encodeURIComponent(getPrayerText());
+    const text = getPrayerText();
+    if (!text) return;
+    const encoded = encodeURIComponent(text);
     const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
-    const url = isMobile
-      ? `whatsapp://send?text=${text}`
-      : `https://web.whatsapp.com/send?text=${text}`;
-    window.open(url, '_blank');
+    window.open(isMobile ? `whatsapp://send?text=${encoded}` : `https://web.whatsapp.com/send?text=${encoded}`, '_blank');
   }
 
   function copyPrayer() {
     const text = getPrayerText();
+    if (!text) return;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(showCopied);
     } else {
@@ -686,7 +739,6 @@ Varie les thèmes : la paix, la force, la protection, la famille, le travail, la
     setTimeout(() => document.getElementById('toast').classList.remove('show'), 2800);
   }
 
-  // ─── Lancement ────────────────────────────────────────────────
   init();
 </script>
 </body>
